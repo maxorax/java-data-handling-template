@@ -1,5 +1,9 @@
 package com.epam.izh.rd.online.service;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 public class SimpleTextService implements TextService {
 
     /**
@@ -13,7 +17,9 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String removeString(String base, String remove) {
-        return null; //TODO
+        if (base.length() != 0) {
+            return base.replaceAll(remove, "");//TODO
+        }else return base;
     }
 
     /**
@@ -24,7 +30,7 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isQuestionString(String text) {
-        return false; //TODO
+        return text.endsWith("?"); //TODO
     }
 
     /**
@@ -35,7 +41,11 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String concatenate(String... elements) {
-        return null; //TODO
+        String text="";
+        for (String element: elements) {
+            text+=element;
+        }
+        return text.replaceAll(", ",""); //TODO
     }
 
     /**
@@ -47,7 +57,31 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public String toJumpCase(String text) {
-        return null; //TODO
+
+        String newText="";
+        if(text.length()!=0) {
+            if (Character.isUpperCase(text.charAt(0))) {
+                newText += text.substring(0, 1).toLowerCase();
+
+            } else {
+                newText += text.substring(0, 1).toUpperCase();
+            }
+
+            for (int i = 1; i < text.length(); i++) {
+                if (newText.charAt(i - 1) == ' ' && Character.isUpperCase(newText.charAt((i - 2)))) {
+                    newText += text.substring(i, (i + 1)).toUpperCase();
+                } else if (newText.charAt(i - 1) == ' ' && Character.isLowerCase(newText.charAt((i - 2)))) {
+                    newText += text.substring(i, (i + 1)).toLowerCase();
+                } else if (Character.isUpperCase(newText.charAt((i - 1)))) {
+                    newText += text.substring(i, (i + 1)).toLowerCase();
+
+                } else {
+                    newText += text.substring(i, (i + 1)).toUpperCase();
+                }
+            }
+            return newText; //TODO
+        }
+        return newText;
     }
 
     /**
@@ -59,6 +93,17 @@ public class SimpleTextService implements TextService {
      */
     @Override
     public boolean isPalindrome(String string) {
-       return false; //TODO
+        if(string.length()!=0){
+        String newText=string.replaceAll(" ","");
+        StringBuffer text=new StringBuffer(newText).reverse();
+        String nText=text.toString();
+        for (int i=0;i<newText.length();i++) {
+            if (Character.toLowerCase(newText.charAt(i)) !=Character.toLowerCase(text.charAt(i))) {
+                return false;// TODO
+            }
+        }
+        return true;
+        }
+        return false;
     }
 }
